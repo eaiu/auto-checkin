@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  v2ex-checkin:
+    build: .
+    image: eaiu/v2ex-checkin:latest
+    container_name: v2ex-checkin
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    # 可选：如果需要定时任务，取消注释下面的配置
+    # command: |
+    #   sh -c "
+    #     echo '0 8 * * * cd /app && python main.py >> /app/logs/checkin.log 2>&1' > /tmp/crontab &&
+    #     crontab /tmp/crontab &&
+    #     crond -f
+    #   "
+
+  # 可选：一次性执行服务
+  v2ex-checkin-once:
+    build: .
+    image: eaiu/v2ex-checkin:latest
+    container_name: v2ex-checkin-once
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    command: python main.py
+    profiles:
+      - once

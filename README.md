@@ -10,7 +10,47 @@
 - ✅ 详细的签到日志
 - ✅ Telegram 通知推送
 
-## 安装使用
+## Docker部署（推荐）
+
+### 1. 使用Docker运行
+
+#### 一次性运行
+```bash
+# 拉取镜像
+docker pull eaiu/v2ex-checkin:latest
+
+# 运行签到
+docker run --rm \
+  -e V2EX_COOKIES="your_cookies_here" \
+  -e TG_BOT_TOKEN="your_bot_token" \
+  -e TG_USER_ID="your_user_id" \
+  eaiu/v2ex-checkin:latest
+```
+
+#### 使用docker-compose（推荐）
+```bash
+# 1. 创建.env文件
+cp .env.example .env
+# 编辑.env文件填入配置
+
+# 2. 一次性运行
+docker-compose --profile once up v2ex-checkin-once
+
+# 3. 或者作为服务运行（需要外部定时任务）
+docker-compose up -d v2ex-checkin
+```
+
+### 2. 自己构建镜像
+
+```bash
+# 构建镜像
+docker build -t v2ex-checkin .
+
+# 运行
+docker run --rm --env-file .env v2ex-checkin
+```
+
+## 本地安装使用
 
 ### 1. 安装依赖
 
